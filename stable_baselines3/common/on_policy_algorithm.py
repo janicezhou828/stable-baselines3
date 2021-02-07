@@ -298,8 +298,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
     def learn(
         self,
-        total_timesteps: int,
         opponent_model,
+        total_timesteps: int,
         callback: MaybeCallback = None,
         log_interval: int = 1,
         eval_env: Optional[GymEnv] = None,
