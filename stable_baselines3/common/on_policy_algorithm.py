@@ -1,5 +1,6 @@
 import time
 import slimevolleygym
+import numpy
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import gym
