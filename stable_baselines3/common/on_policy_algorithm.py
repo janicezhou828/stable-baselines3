@@ -125,7 +125,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
     # UPDATED COLLECT_ROLLOUTS FUNCTION FOR PLAYING AGAINST OPPONENT
     def collect_rollouts(
-        self, env: VecEnv, callback: BaseCallback, rollout_buffer: RolloutBuffer, n_rollout_steps: int, opponent_model
+        self, opponent_model, env: VecEnv, callback: BaseCallback, rollout_buffer: RolloutBuffer, n_rollout_steps: int, 
     ) -> bool:
         """
         Collect experiences using the current policy and fill a ``RolloutBuffer``.
@@ -320,7 +320,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         while self.num_timesteps < total_timesteps:
             
             ## ADDED OPPONENT TO COLLECT_ROLLOUTS
-            continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, opponent_model, n_rollout_steps=self.n_steps)
+            continue_training = self.collect_rollouts(opponent_model,self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
 
             if continue_training is False:
                 break
