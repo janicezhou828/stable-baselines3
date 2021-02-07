@@ -201,7 +201,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             
             
             ## OPPOMENT MODEL 
-            #opponent_model._last_obs = infos['otherObs']
+            opponent_model._last_obs = infos['otherObs']
 
             self.num_timesteps += env.num_envs
 
