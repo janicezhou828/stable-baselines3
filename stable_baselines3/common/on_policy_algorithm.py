@@ -163,13 +163,15 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # Convert to pytorch tensor
                 obs_tensor = th.as_tensor(self._last_obs).to(self.device)
                 actions, values, log_probs = self.policy.forward(obs_tensor)
+            print("line 166: obs_tensor, actions, values,log_probs: ", obs_tensor, actions, values,log_probs)
             actions = actions.cpu().numpy()
-
+            print("line 168: actions numpy", actions)
             ## OPPOMENT MODEL
             with th.no_grad():
                 # Convert to pytorch tensor
                 obs_tensor_op = th.as_tensor(opponent_model._last_obs).to(self.device)
                 actions_op, values_op, log_probs_op = opponent_model.policy.forward(obs_tensor_op)
+
             actions_op = actions_op.cpu().numpy()            
 
             # Rescale and perform action
@@ -177,7 +179,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             # Clip the actions to avoid out of bound error
             if isinstance(self.action_space, gym.spaces.Box):
                 clipped_actions = np.clip(actions, self.action_space.low, self.action_space.high)
-
+            print("line 182: clipped actions numpy", clipped_actions)
             ## OPPOMENT MODEL
             # Rescale and perform action
             clipped_actions_op = actions_op
@@ -185,8 +187,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             if isinstance(self.action_space, gym.spaces.Box):
                 clipped_actions_op = np.clip(actions_op, self.action_space.low, self.action_space.high)
 
-            volley_env = gym.make("SlimeVolley-v0")
-            new_obs, rewards, dones, infos = volley_env.step(clipped_actions,clipped_actions_op)
+            #volley_env = gym.make("SlimeVolley-v0")
+            new_obs, rewards, dones, infos = env.step(clipped_actions)
+            print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, infos)
+            #new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0],clipped_actions_op[0])
             
             ## OPPOMENT MODEL 
             opponent_model._last_obs = infos['otherObs']
