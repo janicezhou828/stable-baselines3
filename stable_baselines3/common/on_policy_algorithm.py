@@ -190,18 +190,18 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             volley_env = gym.make("SlimeVolley-v0")
             new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0],clipped_actions_op[0])
-            print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, infos)
+            print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, info)
             #new_obs, rewards, dones, infos = env.step(clipped_actions)
             #new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0])
             
             new_obs = numpy.array([new_obs])
             rewards = numpy.array([rewards])
             dones = numpy.array([dones])
-            infos = numpy.array([infos])
+            infos = numpy.array([info])
             
             
             ## OPPOMENT MODEL 
-            opponent_model._last_obs = infos['otherObs']
+            opponent_model._last_obs = info['otherObs']
 
             self.num_timesteps += env.num_envs
 
