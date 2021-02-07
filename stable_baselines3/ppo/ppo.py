@@ -279,6 +279,7 @@ class PPO(OnPolicyAlgorithm):
     ) -> "PPO":
 
         return super(PPO, self).learn(
+            opponent_model=opponent_model,
             total_timesteps=total_timesteps,
             callback=callback,
             log_interval=log_interval,
