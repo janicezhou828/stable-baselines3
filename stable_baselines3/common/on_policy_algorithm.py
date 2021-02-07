@@ -1,4 +1,5 @@
 import time
+import slimevolleygym
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import gym
@@ -184,7 +185,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             if isinstance(self.action_space, gym.spaces.Box):
                 clipped_actions_op = np.clip(actions_op, self.action_space.low, self.action_space.high)
 
-            new_obs, rewards, dones, infos = env.step(clipped_actions,clipped_actions_op)
+            volley_env = gym.make("SlimeVolley-v0")
+            new_obs, rewards, dones, infos = volley_env.step(clipped_actions,clipped_actions_op)
             
             ## OPPOMENT MODEL 
             opponent_model._last_obs = infos['otherObs']
