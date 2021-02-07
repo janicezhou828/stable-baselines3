@@ -267,6 +267,7 @@ class PPO(OnPolicyAlgorithm):
     def learn(
         self,
         total_timesteps: int,
+        opponent_model,
         callback: MaybeCallback = None,
         log_interval: int = 1,
         eval_env: Optional[GymEnv] = None,
