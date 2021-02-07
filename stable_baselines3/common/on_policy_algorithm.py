@@ -189,7 +189,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 clipped_actions_op = np.clip(actions_op, self.action_space.low, self.action_space.high)
 
             volley_env = gym.make("SlimeVolley-v0")
-            new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0],clipped_actions_op[0])
+            new_obs, rewards, dones, info = volley_env.step(clipped_actions[0],clipped_actions_op[0])
             print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, info)
             #new_obs, rewards, dones, infos = env.step(clipped_actions)
             #new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0])
