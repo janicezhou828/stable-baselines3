@@ -164,9 +164,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # Convert to pytorch tensor
                 obs_tensor = th.as_tensor(self._last_obs).to(self.device)
                 actions, values, log_probs = self.policy.forward(obs_tensor)
-            print("line 166: obs_tensor, actions, values,log_probs: ", obs_tensor, actions, values,log_probs)
+            ####print("line 166: obs_tensor, actions, values,log_probs: ", obs_tensor, actions, values,log_probs)
             actions = actions.cpu().numpy()
-            print("line 168: actions numpy", actions)
+            print("line 168: agent actions numpy", actions)
             ## OPPOMENT MODEL
             with th.no_grad():
                 # Convert to pytorch tensor
@@ -174,13 +174,13 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 actions_op, values_op, log_probs_op = opponent_model.policy.forward(obs_tensor_op)
 
             actions_op = actions_op.cpu().numpy()            
-
+            print("line 177: opponent actions numpy", actions_op)
             # Rescale and perform action
             clipped_actions = actions
             # Clip the actions to avoid out of bound error
             if isinstance(self.action_space, gym.spaces.Box):
                 clipped_actions = np.clip(actions, self.action_space.low, self.action_space.high)
-            print("line 182: clipped actions numpy", clipped_actions)
+            ####print("line 182: clipped actions numpy", clipped_actions)
             ## OPPOMENT MODEL
             # Rescale and perform action
             clipped_actions_op = actions_op
@@ -190,12 +190,12 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             volley_env = gym.make("SlimeVolley-v0")
             new_obs, rewards, dones, info = volley_env.step(clipped_actions[0],clipped_actions_op[0])
-            print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, info)
-            #new_obs, rewards, dones, infos = env.step(clipped_actions)
-            #new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0])
+            ####print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, info)
+            ################new_obs, rewards, dones, infos = env.step(clipped_actions)
+            ################new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0])
             
             new_obs = numpy.array([new_obs])
-            print("line 209: new_obs", new_obs)
+            print("line 209: agent new_obs", new_obs)
             rewards = numpy.array([rewards])
             dones = numpy.array([dones])
             infos = numpy.array([info])
@@ -203,10 +203,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             
             ## OPPOMENT MODEL 
             new_obs_op = info['otherObs']
-            print("line 206: new_obs_op", new_obs_op)
+            ####print("line 206: new_obs_op", new_obs_op)
             
             opponent_model._last_obs = numpy.array([new_obs_op])
-            print("line 209: opponent_model._last_obs", opponent_model._last_obs)
+            print("line 209: opponent new_obs", opponent_model._last_obs)
 
             self.num_timesteps += env.num_envs
 
