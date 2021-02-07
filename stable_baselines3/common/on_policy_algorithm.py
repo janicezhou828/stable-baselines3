@@ -193,7 +193,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             #new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0],clipped_actions_op[0])
             
             ## OPPOMENT MODEL 
-            opponent_model._last_obs = infos['otherObs']
+            #opponent_model._last_obs = infos['otherObs']
 
             self.num_timesteps += env.num_envs
 
