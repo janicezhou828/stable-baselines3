@@ -166,7 +166,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 actions, values, log_probs = self.policy.forward(obs_tensor)
             ####print("line 166: obs_tensor, actions, values,log_probs: ", obs_tensor, actions, values,log_probs)
             actions = actions.cpu().numpy()
-            print("line 168: agent actions numpy", actions)
+            ####print("line 168: agent actions numpy", actions)
             ## OPPOMENT MODEL
             with th.no_grad():
                 # Convert to pytorch tensor
@@ -174,7 +174,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 actions_op, values_op, log_probs_op = opponent_model.policy.forward(obs_tensor_op)
 
             actions_op = actions_op.cpu().numpy()            
-            print("line 177: opponent actions numpy", actions_op)
+            ####print("line 177: opponent actions numpy", actions_op)
             # Rescale and perform action
             clipped_actions = actions
             # Clip the actions to avoid out of bound error
@@ -195,7 +195,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             ################new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0])
             
             new_obs = numpy.array([new_obs])
-            print("line 209: agent new_obs", new_obs)
+            ####print("line 209: agent new_obs", new_obs)
             rewards = numpy.array([rewards])
             dones = numpy.array([dones])
             infos = numpy.array([info])
@@ -206,7 +206,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             ####print("line 206: new_obs_op", new_obs_op)
             
             opponent_model._last_obs = numpy.array([new_obs_op])
-            print("line 209: opponent new_obs", opponent_model._last_obs)
+            ####print("line 209: opponent new_obs", opponent_model._last_obs)
 
             self.num_timesteps += env.num_envs
 
