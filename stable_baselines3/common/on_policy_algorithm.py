@@ -147,14 +147,15 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         rollout_buffer.reset()
 
         ## Initialized observation of OPPOMENT MODEL
-        opponent_model._last_obs = self._last_obs
+        opponent_model._last_obs = self._last_obs ### MIGHT NEED TO CHANGE THIS
 
         # Sample new weights for the state dependent exploration
         if self.use_sde:
             self.policy.reset_noise(env.num_envs)
 
         callback.on_rollout_start()
-        volley_env = gym.make("SlimeVolley-v0")
+        volley_env = gym.make("SlimeVolley-v0") ### WORKS FOR NOW, MIGHT NEED BETTER WAYS TO DO THIS
+
         while n_steps < n_rollout_steps:
             if self.use_sde and self.sde_sample_freq > 0 and n_steps % self.sde_sample_freq == 0:
                 # Sample a new noise matrix
@@ -181,6 +182,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             if isinstance(self.action_space, gym.spaces.Box):
                 clipped_actions = np.clip(actions, self.action_space.low, self.action_space.high)
             ####print("line 182: clipped actions numpy", clipped_actions)
+            
             ## OPPOMENT MODEL
             # Rescale and perform action
             clipped_actions_op = actions_op
@@ -188,21 +190,22 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             if isinstance(self.action_space, gym.spaces.Box):
                 clipped_actions_op = np.clip(actions_op, self.action_space.low, self.action_space.high)
 
+            action_n = np.array([clipped_actions[0],clipped_actions_op[0]])
             
-            new_obs, rewards, dones, info = volley_env.step(clipped_actions[0],clipped_actions_op[0])
+            new_obs_n, rewards_n, dones_n, info_n = volley_env.step(action_n)
             ####print("line 192: new_obs, rewards, dones, infos", new_obs, rewards, dones, info)
             ################new_obs, rewards, dones, infos = env.step(clipped_actions)
             ################new_obs, rewards, dones, infos = volley_env.step(clipped_actions[0])
             
-            new_obs = numpy.array([new_obs])
+            new_obs = numpy.array([new_obs_n[0]])
             ####print("line 209: agent new_obs", new_obs)
-            rewards = numpy.array([rewards])
-            dones = numpy.array([dones])
-            infos = numpy.array([info])
+            rewards = numpy.array([rewards_n[0]])
+            dones = numpy.array([dones_n[0]])
+            infos = numpy.array([info_n])
             
             
             ## OPPOMENT MODEL 
-            new_obs_op = info['otherObs']
+            new_obs_op = numpy.array([new_obs_n[1]])
             ####print("line 206: new_obs_op", new_obs_op)
             
             opponent_model._last_obs = numpy.array([new_obs_op])
